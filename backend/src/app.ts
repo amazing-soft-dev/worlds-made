@@ -1,9 +1,11 @@
 import Fastify, { type FastifyInstance } from 'fastify';
+import { LIMITS } from '@worlds-made/shared';
 import { registerAuth } from './auth/auth';
 import { loadConfig, type Config } from './config';
 import { createServices, type Services } from './container';
 import { registerErrorHandling } from './errors';
 import { genReqId, loggerOptions } from './lib/logger';
+import { enforce } from './lib/rate-limit';
 import { ageRoutes } from './routes/age';
 import { authRoutes } from './routes/auth';
 import { gameRoutes } from './routes/games';
@@ -29,6 +31,8 @@ export function buildApp(opts: AppOptions = {}): FastifyInstance {
     genReqId,
     requestIdHeader: false,
     bodyLimit: 512 * 1024,
+    // Behind Vercel the real client address is in X-Forwarded-For.
+    trustProxy: config.isProd,
   });
   app.decorate('config', config);
   app.decorate('services', services);
@@ -37,6 +41,10 @@ export function buildApp(opts: AppOptions = {}): FastifyInstance {
   });
   registerErrorHandling(app);
   registerAuth(app);
+  // A soft per-IP ceiling against floods; real quotas are enforced per account elsewhere.
+  app.addHook('onRequest', async (req, reply) => {
+    if (req.url.startsWith('/api/')) enforce(services.limiter, reply, `ip:${req.ip}`, LIMITS.apiPerMinutePerIp, 60_000);
+  });
 
   // Every route lives under /api so the frontend rewrite and Vercel routing agree.
   app.register(healthRoutes, { prefix: '/api' });

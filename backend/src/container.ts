@@ -5,10 +5,12 @@ import { MeteredLlm } from './adapters/llm/ledger';
 import type { Config } from './config';
 import { GameBuilder } from './services/games/builder';
 import { GameService } from './services/games/games';
+import { BuildGate, SpendGuard } from './services/games/guards';
 import { UsageService } from './services/games/usage';
 import { BuildWorkflow } from './services/games/workflow';
 import { FakeModerator, OpenAiModerator } from './services/moderation/moderator';
 import { ModerationService } from './services/moderation/service';
+import { RateLimiter } from './lib/rate-limit';
 import { ProfileService } from './services/profiles';
 
 /** Everything the routes need, built once. Tests pass overrides to swap any piece for a fake. */
@@ -23,6 +25,9 @@ export interface Services {
   builder: GameBuilder;
   usage: UsageService;
   workflow: BuildWorkflow;
+  limiter: RateLimiter;
+  gate: BuildGate;
+  spend: SpendGuard;
 }
 
 export function createServices(config: Config, overrides: Partial<Services> = {}): Services {
@@ -38,6 +43,8 @@ export function createServices(config: Config, overrides: Partial<Services> = {}
   const games = overrides.games ?? new GameService(store, blobs);
   const builder = overrides.builder ?? new GameBuilder(llm, moderation, games);
   const usage = overrides.usage ?? new UsageService(store);
+  const gate = overrides.gate ?? new BuildGate();
+  const spend = overrides.spend ?? new SpendGuard(config, llm);
   return {
     config,
     store,
@@ -48,6 +55,9 @@ export function createServices(config: Config, overrides: Partial<Services> = {}
     games,
     builder,
     usage,
-    workflow: overrides.workflow ?? new BuildWorkflow(builder, usage, store),
+    workflow: overrides.workflow ?? new BuildWorkflow(builder, usage, store, spend, gate),
+    limiter: overrides.limiter ?? new RateLimiter(),
+    gate,
+    spend,
   };
 }
