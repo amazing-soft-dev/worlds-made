@@ -53,7 +53,8 @@ export interface ProfileRow {
 
 export interface GameRow {
   id: string;
-  owner_id: string;
+  /** Null for platform games (daily challenges). */
+  owner_id: string | null;
   title: string;
   description: string;
   tags: string[];
