@@ -38,6 +38,8 @@ const envSchema = z.object({
   /** Extra blocklist terms (comma separated), supplied by whoever runs trust and safety. */
   MODERATION_EXTRA_TERMS: z.string().default(""),
   RAWG_API_KEY: z.string().optional(),
+  /** JSON map of store domain to affiliate query string, e.g. {"store.example.com":"ref=worldsmade"}. */
+  AFFILIATE_TAGS: z.string().default("{}"),
   STRIPE_SECRET_KEY: z.string().optional(),
   STRIPE_WEBHOOK_SECRET: z.string().optional(),
   STRIPE_PRICE_ID: z.string().optional(),
@@ -51,6 +53,15 @@ const envSchema = z.object({
 });
 
 export type Env = z.infer<typeof envSchema>;
+
+function parseTags(raw: string): Record<string, string> {
+  try {
+    const v: unknown = JSON.parse(raw);
+    return v && typeof v === "object" ? Object.fromEntries(Object.entries(v).filter(([, x]) => typeof x === "string")) as Record<string, string> : {};
+  } catch {
+    return {};
+  }
+}
 
 /** Parsed, typed configuration. Integrations are `null` when their keys are absent, and the fakes are used instead. */
 export function loadConfig(env: NodeJS.ProcessEnv = process.env) {
@@ -82,6 +93,7 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env) {
     openaiKey: e.OPENAI_API_KEY ?? null,
     moderationExtraTerms: e.MODERATION_EXTRA_TERMS.split(",").map((s) => s.trim()).filter(Boolean),
     rawgKey: e.RAWG_API_KEY ?? null,
+    affiliateTags: parseTags(e.AFFILIATE_TAGS),
     stripe:
       e.STRIPE_SECRET_KEY && e.STRIPE_WEBHOOK_SECRET && e.STRIPE_PRICE_ID
         ? { secretKey: e.STRIPE_SECRET_KEY, webhookSecret: e.STRIPE_WEBHOOK_SECRET, priceId: e.STRIPE_PRICE_ID }
