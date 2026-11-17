@@ -12,10 +12,11 @@ HEAD_SHA="${HEAD_SHA:?HEAD_SHA is required}"
 PREFIXES='feat|fix|docs|ci|build'
 
 PRS="$(gh pr list --head "$HEAD_BRANCH" --state open \
-  --json number,baseRefName,headRefOid --jq '.[] | "\(.number) \(.baseRefName) \(.headRefOid)"')"
+  --json number,baseRefName,headRefOid,isDraft,isCrossRepository \
+  --jq '.[] | select(.isDraft == false and .isCrossRepository == false) | "\(.number) \(.baseRefName) \(.headRefOid)"')"
 
 if [ -z "$PRS" ]; then
-  echo "No open pull request for ${HEAD_BRANCH}."
+  echo "No open, non-draft, same-repository pull request for ${HEAD_BRANCH}."
   exit 0
 fi
 
