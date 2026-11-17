@@ -1,0 +1,52 @@
+name: Open pull request
+
+# A push to a feature branch opens a pull request into dev.
+# A push to dev opens (or updates) the dev -> main pull request.
+on:
+  push:
+    branches:
+      - dev
+      - 'feat/**'
+      - 'fix/**'
+      - 'docs/**'
+      - 'ci/**'
+      - 'build/**'
+
+concurrency:
+  group: open-pr-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  open:
+    name: Open or update the pull request
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      # The repository secret, not the default GITHUB_TOKEN: pull requests and merges made with the
+      # default token do not start the next workflow, so CI would never run.
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+      GH_REPO: ${{ github.repository }}
+      BRANCH: ${{ github.ref_name }}
+    steps:
+      - name: Check the GH_TOKEN secret
+        id: token
+        run: |
+          if [ -z "$GH_TOKEN" ]; then
+            echo "::warning title=GH_TOKEN missing::Add a GH_TOKEN repository secret (fine-grained token with contents, pull requests and issues write) so pull requests can be opened automatically."
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Check out
+        if: steps.token.outputs.ready == 'true'
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Open or update the pull request
+        if: steps.token.outputs.ready == 'true'
+        run: bash .github/scripts/open-pr.sh
