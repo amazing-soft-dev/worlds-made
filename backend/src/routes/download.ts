@@ -23,7 +23,7 @@ export const downloadRoutes = (services: Services): FastifyPluginAsync => async 
     const html = version ? await services.games.html(version) : null;
     if (html === null) throw errors.notFound('Game not found');
 
-    const creator = (await services.profiles.get(game.owner_id))?.display_name ?? 'a player';
+    const creator = (game.owner_id ? (await services.profiles.get(game.owner_id))?.display_name : null) ?? 'Worlds Made';
     const file = prepareDownload(format, { game, html, creator, siteUrl: services.config.siteUrl });
     return reply
       .header('content-disposition', `attachment; filename="${file.filename}"`)

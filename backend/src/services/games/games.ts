@@ -50,7 +50,7 @@ export class GameService {
     return this.blobs.get(version.html_path);
   }
 
-  async createWithVersion(ownerId: string, title: string, v: NewVersion): Promise<{ game: GameRow; version: GameVersionRow }> {
+  async createWithVersion(ownerId: string | null, title: string, v: NewVersion): Promise<{ game: GameRow; version: GameVersionRow }> {
     const game = await this.store.insert<GameRow>('games', {
       owner_id: ownerId,
       title,

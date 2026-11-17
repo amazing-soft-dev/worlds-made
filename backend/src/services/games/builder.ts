@@ -12,7 +12,8 @@ import { buildUserPrompt, extractHtml, GAME_SYSTEM_PROMPT, type BuildKind } from
 import { pickGenre, type Genre } from './templates';
 
 export interface BuildInput {
-  userId: string;
+  /** The player. Null only for platform games (the daily challenge). */
+  userId: string | null;
   kind: BuildKind;
   /** The player's words: the request for generate, the instruction for change, ignored for repair. */
   prompt: string;
@@ -58,7 +59,7 @@ export class GameBuilder {
     let existing: GameRow | null = null;
     let currentHtml: string | undefined;
     if (input.kind === 'repair' || input.kind === 'change') {
-      existing = await this.games.getOwned(input.gameId ?? '', input.userId);
+      existing = await this.games.getOwned(input.gameId ?? '', input.userId ?? '');
       const current = existing.current_version_id ? await this.games.getVersion(existing.current_version_id) : null;
       currentHtml = current ? ((await this.games.html(current)) ?? undefined) : undefined;
       if (!currentHtml) throw new AppError(409, 'no_current_version', 'This game has no saved version to change');
