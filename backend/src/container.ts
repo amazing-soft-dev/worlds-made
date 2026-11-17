@@ -1,4 +1,5 @@
 import { createStores, type BlobStore, type DataStore } from './adapters/data';
+import { StripeClient, type BillingProvider } from './adapters/stripe/billing';
 import { MemoryMailer, ResendMailer, type Mailer } from './adapters/mail/mailer';
 import type { GameCatalog } from './adapters/rawg/catalog';
 import { FakeCatalog } from './adapters/rawg/fake';
@@ -13,6 +14,7 @@ import { GalleryService } from './services/community/gallery';
 import { ReportService } from './services/community/reports';
 import { DailyService } from './services/daily/daily';
 import { DailyScoreService } from './services/daily/scores';
+import { BillingService } from './services/billing/billing';
 import { PublishService } from './services/community/publish';
 import { BuildGate, SpendGuard } from './services/games/guards';
 import { UsageService } from './services/games/usage';
@@ -47,6 +49,8 @@ export interface Services {
   dailyScores: DailyScoreService;
   catalog: GameCatalog;
   recommender: RecommendService;
+  billingProvider: BillingProvider | null;
+  billing: BillingService;
 }
 
 export function createServices(config: Config, overrides: Partial<Services> = {}): Services {
@@ -62,6 +66,7 @@ export function createServices(config: Config, overrides: Partial<Services> = {}
   const games = overrides.games ?? new GameLibrary(store, blobs);
   const builder = overrides.builder ?? new GameBuilder(llm, moderation, games);
   const usage = overrides.usage ?? new UsageService(store);
+  const billingProvider = overrides.billingProvider !== undefined ? overrides.billingProvider : config.stripe ? new StripeClient(config.stripe.secretKey, config.stripe.priceId) : null;
   const catalog = overrides.catalog ?? (config.rawgKey ? new RawgCatalog(config.rawgKey) : new FakeCatalog());
   const gate = overrides.gate ?? new BuildGate();
   const mailer = overrides.mailer ?? (config.resendKey ? new ResendMailer(config.resendKey, config.mailFrom) : new MemoryMailer());
@@ -86,6 +91,8 @@ export function createServices(config: Config, overrides: Partial<Services> = {}
     reports: overrides.reports ?? new ReportService(store, mailer, config.mailTo),
     daily: overrides.daily ?? new DailyService(store, games, builder),
     dailyScores: overrides.dailyScores ?? new DailyScoreService(store, config.cookieSecret),
+    billingProvider,
+    billing: overrides.billing ?? new BillingService(store, billingProvider, { site: config.siteUrl }),
     catalog,
     recommender: overrides.recommender ?? new RecommendService(catalog, new RecCache(store), llm, moderation, config.affiliateTags),
   };
