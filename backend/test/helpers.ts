@@ -1,4 +1,8 @@
 import type { FastifyInstance } from 'fastify';
+import { buildApp } from '../src/app';
+import { MemoryStore } from '../src/adapters/data/memory';
+import { loadConfig } from '../src/config';
+import { renderTemplate } from '../src/services/games/templates';
 import { MeteredLlm } from '../src/adapters/llm/ledger';
 import type { LlmProvider, LlmRequest, LlmResponse } from '../src/adapters/llm/provider';
 import type { DataStore } from '../src/adapters/data/store';
@@ -37,3 +41,18 @@ export class ScriptedLlm implements LlmProvider {
 
 export const reply = (text: string): LlmResponse => ({ text, model: 'scripted-model', tokensIn: 100, tokensOut: 200 });
 export const meter = (provider: LlmProvider, store: DataStore) => new MeteredLlm(provider, store, { inPerM: 1, outPerM: 2 });
+
+const GOOD = '```html\n' + renderTemplate('runner', 'Frog Hop') + '\n```';
+
+/** An app with in-memory data and a model that always returns a good game, for community feature tests. */
+export function communityApp() {
+  const store = new MemoryStore();
+  const app = buildApp({ config: loadConfig({}), services: { store, llm: meter(new ScriptedLlm([reply(GOOD)]), store) } });
+  return { app, store };
+}
+
+/** Generates a draft game for the user and returns its id. */
+export async function draft(app: FastifyInstance, headers: Record<string, string>): Promise<string> {
+  const res = await app.inject({ method: 'POST', url: '/api/games/generate', headers, payload: { prompt: 'a frog that hops' } });
+  return (res.json() as { game: { id: string } }).game.id;
+}
