@@ -18,6 +18,8 @@ export const LIMITS = {
   reportsToHide: 3,
   /** Entries shown on a daily leaderboard. */
   leaderboardSize: 100,
+  /** Soft ceiling on API requests per minute from one IP (abuse guard, not a quota). */
+  apiPerMinutePerIp: 600,
   /** Recommend requests per hour per IP for logged-out visitors. */
   recommendPerHourAnon: 20,
   /** Approved daily challenges that must exist before launch. */
