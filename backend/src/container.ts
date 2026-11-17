@@ -1,5 +1,8 @@
 import { createStores, type BlobStore, type DataStore } from './adapters/data';
 import { MemoryMailer, ResendMailer, type Mailer } from './adapters/mail/mailer';
+import type { GameCatalog } from './adapters/rawg/catalog';
+import { FakeCatalog } from './adapters/rawg/fake';
+import { RawgCatalog } from './adapters/rawg/rawg';
 import { FakeLlm } from './adapters/llm/fake';
 import { HttpLlmProvider } from './adapters/llm/http';
 import { MeteredLlm } from './adapters/llm/ledger';
@@ -18,6 +21,8 @@ import { FakeModerator, OpenAiModerator } from './services/moderation/moderator'
 import { ModerationService } from './services/moderation/service';
 import { RateLimiter } from './lib/rate-limit';
 import { ProfileService } from './services/profiles';
+import { RecCache } from './services/recommend/cache';
+import { RecommendService } from './services/recommend/recommend';
 
 /** Everything the routes need, built once. Tests pass overrides to swap any piece for a fake. */
 export interface Services {
@@ -40,6 +45,8 @@ export interface Services {
   reports: ReportService;
   daily: DailyService;
   dailyScores: DailyScoreService;
+  catalog: GameCatalog;
+  recommender: RecommendService;
 }
 
 export function createServices(config: Config, overrides: Partial<Services> = {}): Services {
@@ -55,6 +62,7 @@ export function createServices(config: Config, overrides: Partial<Services> = {}
   const games = overrides.games ?? new GameLibrary(store, blobs);
   const builder = overrides.builder ?? new GameBuilder(llm, moderation, games);
   const usage = overrides.usage ?? new UsageService(store);
+  const catalog = overrides.catalog ?? (config.rawgKey ? new RawgCatalog(config.rawgKey) : new FakeCatalog());
   const gate = overrides.gate ?? new BuildGate();
   const mailer = overrides.mailer ?? (config.resendKey ? new ResendMailer(config.resendKey, config.mailFrom) : new MemoryMailer());
   const spend = overrides.spend ?? new SpendGuard(config, llm);
@@ -78,5 +86,7 @@ export function createServices(config: Config, overrides: Partial<Services> = {}
     reports: overrides.reports ?? new ReportService(store, mailer, config.mailTo),
     daily: overrides.daily ?? new DailyService(store, games, builder),
     dailyScores: overrides.dailyScores ?? new DailyScoreService(store, config.cookieSecret),
+    catalog,
+    recommender: overrides.recommender ?? new RecommendService(catalog, new RecCache(store), llm, moderation, config.affiliateTags),
   };
 }
