@@ -11,6 +11,7 @@ import { authRoutes } from './routes/auth';
 import { gameRoutes } from './routes/games';
 import { healthRoutes } from './routes/health';
 import { jobRoutes } from './routes/jobs';
+import { libraryRoutes } from './routes/library';
 import { moderationRoutes } from './routes/moderation';
 
 declare module 'fastify' {
@@ -53,5 +54,6 @@ export function buildApp(opts: AppOptions = {}): FastifyInstance {
   app.register(jobRoutes(services), { prefix: '/api' });
   app.register(moderationRoutes(services), { prefix: '/api' });
   app.register(gameRoutes(services), { prefix: '/api' });
+  app.register(libraryRoutes(services), { prefix: '/api' });
   return app;
 }
