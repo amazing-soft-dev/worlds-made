@@ -74,6 +74,8 @@ export function SandboxPlayer({ src, title, className, onScore, onFix, onRestart
         )}
       </div>
 
+      <p className="text-base text-envy">Click the game, then use the arrow keys or Space. On a touch screen, just tap.</p>
+
       <div className="flex flex-wrap items-center justify-between gap-3">
         <Button variant="ghost" onClick={restart} disabled={!src} className="px-5">
           stop and restart
