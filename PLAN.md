@@ -1,6 +1,6 @@
 # Build plan: AI Game Site (Worlds Made design)
 
-Status: **plan only. Nothing here has been executed.** No issues, branches, commits or pushes exist yet. Execution starts when you say go.
+Status: **in progress.** The 71 issues exist on GitHub; Wave 1 (bootstrap) is being merged locally. Track progress in the issues and milestones, not in this file.
 
 ## 1. Decisions (from your answers)
 
