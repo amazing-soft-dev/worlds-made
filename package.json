@@ -22,7 +22,8 @@
     "check:images": "npm run check:images -w frontend",
     "check:a11y": "npm run check:a11y -w frontend",
     "test:e2e": "npm run test:e2e -w backend",
-    "check:sandbox": "npm run check:sandbox -w frontend"
+    "check:sandbox": "npm run check:sandbox -w frontend",
+    "dev:fakes": "npm run dev:fakes -w backend"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
