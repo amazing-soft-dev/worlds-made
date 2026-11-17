@@ -6,6 +6,8 @@ export const LIMITS = {
   buildTimeoutMs: 90_000,
   /** Example only: free builds per day per account. */
   freeBuildsPerDay: 3,
+  /** Example only: builds per day on the paid plan. Set once real cost per build is measured. */
+  paidBuildsPerDay: 30,
   /** Free repairs per build before they count as builds. */
   freeRepairsPerBuild: 2,
   /** Versions kept per game. */

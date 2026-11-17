@@ -65,7 +65,9 @@ export class MemoryStore implements DataStore {
     let out = this.rows(table).filter((r) => matches(r, opts.where));
     if (opts.orderBy) {
       const col = opts.orderBy;
-      out = [...out].sort((a, b) => (opts.desc ? -1 : 1) * compare(a[col], b[col]));
+      // Sort ascending (stable), then reverse for desc, so rows with equal values come back newest-inserted first.
+      out = [...out].sort((a, b) => compare(a[col], b[col]));
+      if (opts.desc) out.reverse();
     }
     const start = opts.offset ?? 0;
     out = out.slice(start, opts.limit === undefined ? undefined : start + opts.limit);

@@ -6,6 +6,7 @@ import { registerErrorHandling } from './errors';
 import { genReqId, loggerOptions } from './lib/logger';
 import { ageRoutes } from './routes/age';
 import { authRoutes } from './routes/auth';
+import { gameRoutes } from './routes/games';
 import { healthRoutes } from './routes/health';
 import { jobRoutes } from './routes/jobs';
 import { moderationRoutes } from './routes/moderation';
@@ -43,5 +44,6 @@ export function buildApp(opts: AppOptions = {}): FastifyInstance {
   app.register(ageRoutes(services), { prefix: '/api' });
   app.register(jobRoutes(services), { prefix: '/api' });
   app.register(moderationRoutes(services), { prefix: '/api' });
+  app.register(gameRoutes(services), { prefix: '/api' });
   return app;
 }
