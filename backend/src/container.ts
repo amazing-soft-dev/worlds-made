@@ -74,6 +74,6 @@ export function createServices(config: Config, overrides: Partial<Services> = {}
     gallery: overrides.gallery ?? new GalleryService(store),
     mailer,
     reports: overrides.reports ?? new ReportService(store, mailer, config.mailTo),
-    daily: overrides.daily ?? new DailyService(store, builder),
+    daily: overrides.daily ?? new DailyService(store, games, builder),
   };
 }
