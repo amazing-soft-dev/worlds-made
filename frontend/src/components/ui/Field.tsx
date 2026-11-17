@@ -2,7 +2,7 @@ import type { ComponentProps, ReactNode } from 'react';
 import { cn } from '@/lib/cn';
 
 export const inputClass =
-  'w-full border border-line bg-bg px-4 py-2.5 text-copy text-ink placeholder:text-envy/70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold disabled:opacity-50';
+  'w-full border border-line bg-bg px-4 py-2.5 text-copy text-ink placeholder:text-envy focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gold disabled:opacity-50';
 
 type Common = { label: string; hint?: ReactNode; className?: string };
 
