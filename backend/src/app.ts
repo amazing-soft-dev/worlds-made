@@ -10,6 +10,8 @@ import { ageRoutes } from './routes/age';
 import { authRoutes } from './routes/auth';
 import { adminRoutes } from './routes/admin';
 import { contactRoutes } from './routes/contact';
+import { dailyAdminRoutes } from './routes/dailyAdmin';
+import { dailyRoutes } from './routes/daily';
 import { downloadRoutes } from './routes/download';
 import { galleryRoutes } from './routes/gallery';
 import { gameOriginRoutes } from './routes/gameOrigin';
@@ -70,6 +72,8 @@ export function buildApp(opts: AppOptions = {}): FastifyInstance {
   app.register(galleryRoutes(services), { prefix: '/api' });
   app.register(reportRoutes(services), { prefix: '/api' });
   app.register(adminRoutes(services), { prefix: '/api' });
+  app.register(dailyAdminRoutes(services), { prefix: '/api' });
+  app.register(dailyRoutes(services), { prefix: '/api' });
   // The game origin route lives outside /api on purpose; it answers only on GAME_ORIGIN's host.
   app.register(gameOriginRoutes(services));
   return app;

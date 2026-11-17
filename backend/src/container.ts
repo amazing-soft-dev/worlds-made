@@ -8,6 +8,7 @@ import { GameBuilder } from './services/games/builder';
 import { GameLibrary } from './services/games/library';
 import { GalleryService } from './services/community/gallery';
 import { ReportService } from './services/community/reports';
+import { DailyService } from './services/daily/daily';
 import { PublishService } from './services/community/publish';
 import { BuildGate, SpendGuard } from './services/games/guards';
 import { UsageService } from './services/games/usage';
@@ -36,6 +37,7 @@ export interface Services {
   publisher: PublishService;
   gallery: GalleryService;
   reports: ReportService;
+  daily: DailyService;
 }
 
 export function createServices(config: Config, overrides: Partial<Services> = {}): Services {
@@ -72,5 +74,6 @@ export function createServices(config: Config, overrides: Partial<Services> = {}
     gallery: overrides.gallery ?? new GalleryService(store),
     mailer,
     reports: overrides.reports ?? new ReportService(store, mailer, config.mailTo),
+    daily: overrides.daily ?? new DailyService(store, games, builder),
   };
 }
