@@ -8,11 +8,14 @@ import { genReqId, loggerOptions } from './lib/logger';
 import { enforce } from './lib/rate-limit';
 import { ageRoutes } from './routes/age';
 import { authRoutes } from './routes/auth';
+import { downloadRoutes } from './routes/download';
+import { gameOriginRoutes } from './routes/gameOrigin';
 import { gameRoutes } from './routes/games';
 import { healthRoutes } from './routes/health';
 import { jobRoutes } from './routes/jobs';
 import { libraryRoutes } from './routes/library';
 import { moderationRoutes } from './routes/moderation';
+import { playUrlRoutes } from './routes/playUrl';
 
 declare module 'fastify' {
   interface FastifyInstance {
@@ -55,5 +58,9 @@ export function buildApp(opts: AppOptions = {}): FastifyInstance {
   app.register(moderationRoutes(services), { prefix: '/api' });
   app.register(gameRoutes(services), { prefix: '/api' });
   app.register(libraryRoutes(services), { prefix: '/api' });
+  app.register(playUrlRoutes(services), { prefix: '/api' });
+  app.register(downloadRoutes(services), { prefix: '/api' });
+  // The game origin route lives outside /api on purpose; it answers only on GAME_ORIGIN's host.
+  app.register(gameOriginRoutes(services));
   return app;
 }

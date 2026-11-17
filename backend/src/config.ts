@@ -11,7 +11,7 @@ const envSchema = z.object({
   /** Public origin of the main site (used for CORS-free links, Stripe return URLs, frame-ancestors). */
   SITE_URL: z.string().url().default('http://localhost:3000'),
   /** Separate registrable domain that serves generated games. Never the main site's origin. */
-  GAME_ORIGIN: z.string().url().default('http://127.0.0.1:4100'),
+  GAME_ORIGIN: z.string().url().default('http://127.0.0.1:4000'),
 
   /** Secret that signs the age and anonymous-id cookies. */
   COOKIE_SECRET: z.string().min(16).optional(),
