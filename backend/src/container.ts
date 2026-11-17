@@ -5,6 +5,8 @@ import { MeteredLlm } from './adapters/llm/ledger';
 import type { Config } from './config';
 import { GameBuilder } from './services/games/builder';
 import { GameService } from './services/games/games';
+import { UsageService } from './services/games/usage';
+import { BuildWorkflow } from './services/games/workflow';
 import { FakeModerator, OpenAiModerator } from './services/moderation/moderator';
 import { ModerationService } from './services/moderation/service';
 import { ProfileService } from './services/profiles';
@@ -19,6 +21,8 @@ export interface Services {
   llm: MeteredLlm;
   games: GameService;
   builder: GameBuilder;
+  usage: UsageService;
+  workflow: BuildWorkflow;
 }
 
 export function createServices(config: Config, overrides: Partial<Services> = {}): Services {
@@ -32,6 +36,8 @@ export function createServices(config: Config, overrides: Partial<Services> = {}
   const prices = { inPerM: config.llm?.priceInPerM ?? 0, outPerM: config.llm?.priceOutPerM ?? 0 };
   const llm = overrides.llm ?? new MeteredLlm(provider, store, prices);
   const games = overrides.games ?? new GameService(store, blobs);
+  const builder = overrides.builder ?? new GameBuilder(llm, moderation, games);
+  const usage = overrides.usage ?? new UsageService(store);
   return {
     config,
     store,
@@ -40,6 +46,8 @@ export function createServices(config: Config, overrides: Partial<Services> = {}
     moderation,
     llm,
     games,
-    builder: overrides.builder ?? new GameBuilder(llm, moderation, games),
+    builder,
+    usage,
+    workflow: overrides.workflow ?? new BuildWorkflow(builder, usage, store),
   };
 }
