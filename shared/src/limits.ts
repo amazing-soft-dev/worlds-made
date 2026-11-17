@@ -1,0 +1,30 @@
+/** Starting values from the V1 spec. Tune after measuring real cost per build. */
+export const LIMITS = {
+  /** Generated game file size cap (bytes). */
+  maxGameBytes: 200 * 1024,
+  /** Server-side timeout for one LLM call. */
+  buildTimeoutMs: 90_000,
+  /** Example only: free builds per day per account. */
+  freeBuildsPerDay: 3,
+  /** Free repairs per build before they count as builds. */
+  freeRepairsPerBuild: 2,
+  /** Versions kept per game. */
+  gameVersionsKept: 5,
+  /** Publishes per account per day. */
+  publishPerDay: 5,
+  /** Reports that hide a game until reviewed. */
+  reportsToHide: 3,
+  /** Entries shown on a daily leaderboard. */
+  leaderboardSize: 100,
+  /** Recommend requests per hour per IP for logged-out visitors. */
+  recommendPerHourAnon: 20,
+  /** Approved daily challenges that must exist before launch. */
+  dailyBacklogMin: 14,
+  /** RAWG Business plan monthly request ceiling. */
+  rawgMonthlyRequests: 50_000,
+  /** Recommend cache lifetime. */
+  recCacheHours: 24,
+} as const;
+
+/** Minimum age to hold an account by region (EEA: GDPR Art. 8, V1 requires 16+). */
+export const MIN_AGE_BY_REGION = { default: 13, eea: 16 } as const;
