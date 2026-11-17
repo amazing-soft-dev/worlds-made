@@ -19,7 +19,7 @@ export default defineConfig([
 
   // Node code: backend service, shared package, repo scripts.
   {
-    files: ['backend/**/*.ts', 'shared/**/*.ts', 'scripts/**/*.{js,mjs}', 'frontend/scripts/**/*.{js,mjs}', '*.mjs'],
+    files: ['backend/**/*.ts', 'shared/**/*.ts', 'scripts/**/*.{js,mjs}', 'frontend/scripts/**/*.{js,mjs}', 'backend/scripts/**/*.{js,mjs}', '*.mjs'],
     extends: [js.configs.recommended, tseslint.configs.recommended],
     languageOptions: { globals: { ...globals.node } },
   },
@@ -52,7 +52,7 @@ export default defineConfig([
 
   // Scripts and the dev server are allowed to log.
   {
-    files: ['backend/src/server.ts', 'scripts/**', 'frontend/scripts/**'],
+    files: ['backend/src/server.ts', 'scripts/**', 'frontend/scripts/**', 'backend/scripts/**'],
     rules: { 'no-console': 'off' },
   },
 ]);

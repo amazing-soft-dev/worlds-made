@@ -12,7 +12,8 @@
     "check:static": "node scripts/check-static.mjs",
     "fetch:images": "node scripts/fetch-images.mjs",
     "test": "tsx --test test/*.test.ts",
-    "check:a11y": "node scripts/check-contrast.mjs"
+    "check:a11y": "node scripts/check-contrast.mjs",
+    "check:sandbox": "node scripts/check-sandbox.mjs"
   },
   "dependencies": {
     "@sentry/browser": "11.14.0",
