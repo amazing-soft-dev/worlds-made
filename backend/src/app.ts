@@ -4,6 +4,7 @@ import { loadConfig, type Config } from './config';
 import { createServices, type Services } from './container';
 import { registerErrorHandling } from './errors';
 import { genReqId, loggerOptions } from './lib/logger';
+import { ageRoutes } from './routes/age';
 import { authRoutes } from './routes/auth';
 import { healthRoutes } from './routes/health';
 
@@ -37,5 +38,6 @@ export function buildApp(opts: AppOptions = {}): FastifyInstance {
   // Every route lives under /api so the frontend rewrite and Vercel routing agree.
   app.register(healthRoutes, { prefix: '/api' });
   app.register(authRoutes(services), { prefix: '/api' });
+  app.register(ageRoutes(services), { prefix: '/api' });
   return app;
 }
