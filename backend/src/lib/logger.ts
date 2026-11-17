@@ -7,9 +7,15 @@ export const REDACT_PATHS = [
   'req.headers.cookie',
   'req.headers["stripe-signature"]',
   'res.headers["set-cookie"]',
+  // Secret-looking fields are redacted at the top level of a log object and one level down.
+  'apiKey',
+  'password',
+  'token',
+  'secret',
   '*.apiKey',
   '*.password',
   '*.token',
+  '*.secret',
 ];
 
 export function loggerOptions(enabled: boolean): FastifyServerOptions['logger'] {
