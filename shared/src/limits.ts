@@ -22,6 +22,10 @@ export const LIMITS = {
   dailyBacklogMin: 14,
   /** RAWG Business plan monthly request ceiling. */
   rawgMonthlyRequests: 50_000,
+  /** Anonymous ids, streaks and scores are deleted after this many days without play. */
+  anonRetentionDays: 180,
+  /** Accounts with no activity for this long (and no active subscription) are deleted. */
+  inactiveAccountDays: 730,
   /** Recommend cache lifetime. */
   recCacheHours: 24,
 } as const;
