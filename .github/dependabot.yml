@@ -12,3 +12,13 @@ updates:
       prefix: 'build'
       prefix-development: 'build'
     open-pull-requests-limit: 5
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    labels: [ci]
+    commit-message:
+      prefix: 'ci'
+    open-pull-requests-limit: 3
