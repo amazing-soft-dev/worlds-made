@@ -33,6 +33,7 @@ jobs:
       - run: npm run typecheck
       - run: npm run check:images
       - run: npm run check:a11y
+      - run: npm run check:sandbox
 
   build:
     name: Build (${{ matrix.target }})
@@ -79,9 +80,24 @@ jobs:
       # shared, backend and frontend: scanner, moderation, age gate, scoring, streaks, CSP, billing, API client ...
       - run: npm test
 
+  e2e:
+    name: End-to-end smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: latest
+          cache: npm
+      - run: npm ci
+      # Starts the real backend and a mock model, then drives the HTTP API: hostile reply, create, play on the
+      # isolated game origin, publish, like, daily challenge and reports. No keys or network needed.
+      - run: npm run test:e2e
+
   ci-passed:
     name: CI passed
-    needs: [lint, build, unit]
+    needs: [lint, build, unit, e2e]
     if: always()
     runs-on: ubuntu-latest
     permissions:
