@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { AuthLink } from '@/components/auth/AuthLink';
+import { MobileMenu } from '@/components/layout/MobileMenu';
 import { site } from '@/content/site';
 
 const linkClass =
@@ -40,18 +41,7 @@ export function Nav() {
 
         <div className="flex items-center gap-6">
           <AuthLink className={linkClass} />
-          <details className="group relative tablet:hidden">
-            <summary className={`${linkClass} cursor-pointer list-none`}>Menu</summary>
-            <ul className="absolute right-0 top-full mt-4 flex min-w-44 flex-col gap-4 border border-gold-deep bg-bg p-5">
-              {site.nav.map((item) => (
-                <li key={item.href}>
-                  <Link href={item.href} className={linkClass}>
-                    {item.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </details>
+          <MobileMenu items={site.nav} linkClass={linkClass} />
         </div>
       </div>
     </header>
