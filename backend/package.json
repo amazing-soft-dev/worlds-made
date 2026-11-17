@@ -10,8 +10,9 @@
     "test": "tsx --test test/*.test.ts"
   },
   "dependencies": {
+    "@worlds-made/shared": "*",
     "fastify": "5.12.8",
-    "@worlds-made/shared": "*"
+    "zod": "4.6.7"
   },
   "devDependencies": {
     "@types/node": "^26.6.6",
