@@ -13,6 +13,7 @@ export const TABLES = [
   'streaks',
   'subscriptions',
   'rec_cache',
+  'llm_calls',
 ] as const;
 
 export type TableName = (typeof TABLES)[number];
@@ -25,6 +26,7 @@ export const UUID_ID_TABLES: ReadonlySet<TableName> = new Set([
   'daily_challenges',
   'challenge_scores',
   'streaks',
+  'llm_calls',
 ]);
 
 /** Tables with a created_at column that defaults to now(). */
@@ -36,6 +38,7 @@ export const CREATED_AT_TABLES: ReadonlySet<TableName> = new Set([
   'reports',
   'daily_challenges',
   'challenge_scores',
+  'llm_calls',
 ]);
 
 export interface ProfileRow {
