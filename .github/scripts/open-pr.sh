@@ -46,6 +46,13 @@ else
   } > pr-body.md
 fi
 
+# Nothing to open when the branch has no commits beyond its base (for example after the bootstrap merge).
+AHEAD="$(git rev-list --count "$RANGE")"
+if [ "$AHEAD" -eq 0 ]; then
+  echo "No commits on ${BRANCH} beyond ${BASE}; no pull request needed."
+  exit 0
+fi
+
 EXISTING="$(gh pr list --head "$BRANCH" --base "$BASE" --state open --json number --jq '.[0].number // empty')"
 
 if [ -n "$EXISTING" ]; then
