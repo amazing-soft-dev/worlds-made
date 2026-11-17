@@ -44,3 +44,28 @@
   --breakpoint-tablet: 810px;
   --breakpoint-desktop: 1200px;
 }
+
+@layer base {
+  html {
+    background: var(--color-bg);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    scroll-padding-top: 5rem;
+  }
+  h1,
+  h2,
+  h3 {
+    font-weight: 400;
+  }
+  ::selection {
+    background: var(--color-gold);
+    color: var(--color-bg);
+  }
+  /* Square corners everywhere: the design has no rounded elements. */
+  *,
+  ::before,
+  ::after {
+    border-radius: 0;
+  }
+}
