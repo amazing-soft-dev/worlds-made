@@ -1,4 +1,5 @@
 import { createStores, type BlobStore, type DataStore } from './adapters/data';
+import { MemoryMailer, ResendMailer, type Mailer } from './adapters/mail/mailer';
 import { FakeLlm } from './adapters/llm/fake';
 import { HttpLlmProvider } from './adapters/llm/http';
 import { MeteredLlm } from './adapters/llm/ledger';
@@ -28,6 +29,7 @@ export interface Services {
   limiter: RateLimiter;
   gate: BuildGate;
   spend: SpendGuard;
+  mailer: Mailer;
 }
 
 export function createServices(config: Config, overrides: Partial<Services> = {}): Services {
@@ -59,5 +61,6 @@ export function createServices(config: Config, overrides: Partial<Services> = {}
     limiter: overrides.limiter ?? new RateLimiter(),
     gate,
     spend,
+    mailer: overrides.mailer ?? (config.resendKey ? new ResendMailer(config.resendKey, config.mailFrom) : new MemoryMailer()),
   };
 }
