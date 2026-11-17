@@ -6,6 +6,8 @@ import type { NextConfig } from 'next';
 const isStatic = process.env.NEXT_OUTPUT === 'export';
 
 const nextConfig: NextConfig = {
+  // shared/ is consumed as TypeScript source.
+  transpilePackages: ['@worlds-made/shared'],
   reactCompiler: true,
   experimental: {
     turbopackRustReactCompiler: true,
