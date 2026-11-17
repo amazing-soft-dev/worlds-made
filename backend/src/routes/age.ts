@@ -63,6 +63,8 @@ export const ageRoutes = (services: Services): FastifyPluginAsync => async (app)
     // Anyone under 18 gets a generated nickname; only adults choose their own name.
     const displayName = age.band === 'adult' ? body.displayName : generateNickname(auth.userId);
     if (!displayName) throw errors.badRequest('Choose a display name');
+    const verdict = services.moderation.checkDisplayName(displayName);
+    if (!verdict.allowed) throw errors.badRequest(verdict.message);
 
     const profile = await services.profiles.create({
       id: auth.userId,

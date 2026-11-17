@@ -8,6 +8,7 @@ import { ageRoutes } from './routes/age';
 import { authRoutes } from './routes/auth';
 import { healthRoutes } from './routes/health';
 import { jobRoutes } from './routes/jobs';
+import { moderationRoutes } from './routes/moderation';
 
 declare module 'fastify' {
   interface FastifyInstance {
@@ -41,5 +42,6 @@ export function buildApp(opts: AppOptions = {}): FastifyInstance {
   app.register(authRoutes(services), { prefix: '/api' });
   app.register(ageRoutes(services), { prefix: '/api' });
   app.register(jobRoutes(services), { prefix: '/api' });
+  app.register(moderationRoutes(services), { prefix: '/api' });
   return app;
 }
