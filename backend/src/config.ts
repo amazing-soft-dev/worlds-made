@@ -35,6 +35,8 @@ const envSchema = z.object({
   LLM_PRICE_OUT_PER_M: z.coerce.number().nonnegative().default(0),
 
   OPENAI_API_KEY: z.string().optional(),
+  /** Extra blocklist terms (comma separated), supplied by whoever runs trust and safety. */
+  MODERATION_EXTRA_TERMS: z.string().default(""),
   RAWG_API_KEY: z.string().optional(),
   STRIPE_SECRET_KEY: z.string().optional(),
   STRIPE_WEBHOOK_SECRET: z.string().optional(),
@@ -78,6 +80,7 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env) {
           }
         : null,
     openaiKey: e.OPENAI_API_KEY ?? null,
+    moderationExtraTerms: e.MODERATION_EXTRA_TERMS.split(",").map((s) => s.trim()).filter(Boolean),
     rawgKey: e.RAWG_API_KEY ?? null,
     stripe:
       e.STRIPE_SECRET_KEY && e.STRIPE_WEBHOOK_SECRET && e.STRIPE_PRICE_ID
