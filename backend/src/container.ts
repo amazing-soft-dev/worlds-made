@@ -7,6 +7,7 @@ import type { Config } from './config';
 import { GameBuilder } from './services/games/builder';
 import { GameLibrary } from './services/games/library';
 import { GalleryService } from './services/community/gallery';
+import { ReportService } from './services/community/reports';
 import { PublishService } from './services/community/publish';
 import { BuildGate, SpendGuard } from './services/games/guards';
 import { UsageService } from './services/games/usage';
@@ -34,6 +35,7 @@ export interface Services {
   mailer: Mailer;
   publisher: PublishService;
   gallery: GalleryService;
+  reports: ReportService;
 }
 
 export function createServices(config: Config, overrides: Partial<Services> = {}): Services {
@@ -50,6 +52,7 @@ export function createServices(config: Config, overrides: Partial<Services> = {}
   const builder = overrides.builder ?? new GameBuilder(llm, moderation, games);
   const usage = overrides.usage ?? new UsageService(store);
   const gate = overrides.gate ?? new BuildGate();
+  const mailer = overrides.mailer ?? (config.resendKey ? new ResendMailer(config.resendKey, config.mailFrom) : new MemoryMailer());
   const spend = overrides.spend ?? new SpendGuard(config, llm);
   return {
     config,
@@ -67,6 +70,7 @@ export function createServices(config: Config, overrides: Partial<Services> = {}
     spend,
     publisher: overrides.publisher ?? new PublishService(store, games, moderation),
     gallery: overrides.gallery ?? new GalleryService(store),
-    mailer: overrides.mailer ?? (config.resendKey ? new ResendMailer(config.resendKey, config.mailFrom) : new MemoryMailer()),
+    mailer,
+    reports: overrides.reports ?? new ReportService(store, mailer, config.mailTo),
   };
 }
