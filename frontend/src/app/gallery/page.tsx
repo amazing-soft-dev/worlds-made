@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { AdSlot } from '@/components/ads/AdSlot';
 import { GalleryView } from '@/components/game/GalleryView';
 import { SectionTitle } from '@/components/ui/SectionTitle';
 
@@ -18,6 +19,7 @@ export default function GalleryPage() {
           description="Anyone can play. Sign in to like a game. Every game has a report button, and every game shows its licence."
         />
         <GalleryView />
+        <AdSlot />
       </div>
     </div>
   );
