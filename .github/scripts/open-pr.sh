@@ -57,7 +57,8 @@ EXISTING="$(gh pr list --head "$BRANCH" --base "$BASE" --state open --json numbe
 
 if [ -n "$EXISTING" ]; then
   if [ "$BRANCH" = "dev" ]; then
-    run gh pr edit "$EXISTING" --body-file pr-body.md
+    # REST instead of `gh pr edit`: edit queries GraphQL fields that need the read:org scope, which a repo-only token lacks.
+    run gh api -X PATCH "repos/${GH_REPO}/pulls/${EXISTING}" -F body=@pr-body.md --silent
     echo "Updated #$EXISTING"
   else
     echo "Pull request #$EXISTING is already open; leaving it."
