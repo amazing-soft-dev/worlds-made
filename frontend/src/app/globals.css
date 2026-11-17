@@ -1,7 +1,40 @@
-/* Tailwind v4, CSS-first: there is no tailwind.config. Theme tokens arrive in the design-token issue. */
+/* Tailwind v4, CSS-first: there is no tailwind.config. Tokens come from the Worlds Made design. */
 @import 'tailwindcss';
 
-html {
-  background: #070c09;
-  color: #e8ede5;
+@theme {
+  /* Colour */
+  --color-bg: #070c09;
+  --color-surface: #0e1712;
+  --color-ink: #e8ede5;
+  --color-gold: #ecd08a;
+  --color-gold-mid: #c6a052;
+  --color-gold-deep: #635028;
+  --color-envy: #8ba394;
+  --color-emerald: #57d39a;
+  --color-danger: #e08a7a;
+  --color-line: rgb(199 160 82 / 0.3);
+  --color-ghost: rgb(99 90 40 / 0.1);
+
+  /* Type: families are set by next/font (see src/app/fonts.ts) */
+  --font-display: var(--font-cinzel), 'Cinzel', serif;
+  --font-body: var(--font-garamond), 'EB Garamond', serif;
+
+  --text-hero: 2.75rem; /* 44px on phones, 96px from the tablet breakpoint */
+  --text-hero--line-height: 1.6;
+  --text-h2: 2.25rem;
+  --text-h2--line-height: 1.6;
+  --text-h3: 1.75rem;
+  --text-h3--line-height: 1.6;
+  --text-lead: 1.25rem;
+  --text-lead--line-height: 1.7;
+  --text-copy: 1.125rem;
+  --text-copy--line-height: 1.55;
+  --text-eyebrow: 0.75rem;
+  --text-eyebrow--line-height: 1.2;
+
+  --tracking-eyebrow: 0.15em;
+  --tracking-button: 0.0375em;
+
+  /* Motion */
+  --ease-site: cubic-bezier(0.44, 0, 0.56, 1);
 }
