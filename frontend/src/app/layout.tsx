@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
 import { Footer } from '@/components/layout/Footer';
+import { Monitoring } from '@/components/Monitoring';
 import { Nav } from '@/components/layout/Nav';
 import { SkipLink } from '@/components/layout/SkipLink';
 import { site } from '@/content/site';
@@ -28,6 +29,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           </main>
           <Footer />
         </AuthProvider>
+        <Monitoring />
       </body>
     </html>
   );
