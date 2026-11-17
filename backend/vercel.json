@@ -2,8 +2,25 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "installCommand": "cd .. && npm ci",
   "buildCommand": "",
-  "rewrites": [{ "source": "/(.*)", "destination": "/api" }],
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/api"
+    }
+  ],
   "functions": {
-    "api/index.ts": { "maxDuration": 90 }
-  }
+    "api/index.ts": {
+      "maxDuration": 90
+    }
+  },
+  "crons": [
+    {
+      "path": "/api/jobs/daily-generate",
+      "schedule": "0 20 * * *"
+    },
+    {
+      "path": "/api/jobs/retention",
+      "schedule": "0 3 * * *"
+    }
+  ]
 }

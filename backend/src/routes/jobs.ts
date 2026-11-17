@@ -13,4 +13,10 @@ export const jobRoutes = (services: Services): FastifyPluginAsync => async (app)
     const accounts = await purgeInactiveAccounts(services.store, now, LIMITS.inactiveAccountDays);
     return { ok: true, anonymous, accounts };
   });
+
+  /** Generates tomorrow's daily challenge as pending, ready for the founder to approve. */
+  app.get('/jobs/daily-generate', async (req) => {
+    requireCron(req, services.config);
+    return { ok: true, ...(await services.daily.generateTomorrow()) };
+  });
 };
