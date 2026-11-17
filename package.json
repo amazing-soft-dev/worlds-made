@@ -19,7 +19,8 @@
     "typecheck": "npm run typecheck --workspaces --if-present",
     "lint": "eslint . --max-warnings 0",
     "lint:fix": "eslint . --fix --max-warnings 0",
-    "check:images": "npm run check:images -w frontend"
+    "check:images": "npm run check:images -w frontend",
+    "check:a11y": "npm run check:a11y -w frontend"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
