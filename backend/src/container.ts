@@ -4,7 +4,7 @@ import { HttpLlmProvider } from './adapters/llm/http';
 import { MeteredLlm } from './adapters/llm/ledger';
 import type { Config } from './config';
 import { GameBuilder } from './services/games/builder';
-import { GameService } from './services/games/games';
+import { GameLibrary } from './services/games/library';
 import { BuildGate, SpendGuard } from './services/games/guards';
 import { UsageService } from './services/games/usage';
 import { BuildWorkflow } from './services/games/workflow';
@@ -21,7 +21,7 @@ export interface Services {
   profiles: ProfileService;
   moderation: ModerationService;
   llm: MeteredLlm;
-  games: GameService;
+  games: GameLibrary;
   builder: GameBuilder;
   usage: UsageService;
   workflow: BuildWorkflow;
@@ -40,7 +40,7 @@ export function createServices(config: Config, overrides: Partial<Services> = {}
   const provider = config.llm ? new HttpLlmProvider({ url: config.llm.url, key: config.llm.key, model: config.llm.model }) : new FakeLlm();
   const prices = { inPerM: config.llm?.priceInPerM ?? 0, outPerM: config.llm?.priceOutPerM ?? 0 };
   const llm = overrides.llm ?? new MeteredLlm(provider, store, prices);
-  const games = overrides.games ?? new GameService(store, blobs);
+  const games = overrides.games ?? new GameLibrary(store, blobs);
   const builder = overrides.builder ?? new GameBuilder(llm, moderation, games);
   const usage = overrides.usage ?? new UsageService(store);
   const gate = overrides.gate ?? new BuildGate();
