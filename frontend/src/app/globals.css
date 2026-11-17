@@ -1,0 +1,7 @@
+/* Tailwind v4, CSS-first: there is no tailwind.config. Theme tokens arrive in the design-token issue. */
+@import 'tailwindcss';
+
+html {
+  background: #070c09;
+  color: #e8ede5;
+}
