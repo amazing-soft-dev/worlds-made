@@ -8,8 +8,11 @@ import { cinzel, garamond } from './fonts';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: site.name,
+  metadataBase: new URL(site.url),
+  title: { default: `${site.name}: ${site.tagline}`, template: `%s · ${site.name}` },
   description: site.description,
+  openGraph: { siteName: site.name, type: 'website', locale: 'en_US' },
+  twitter: { card: 'summary_large_image' },
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
