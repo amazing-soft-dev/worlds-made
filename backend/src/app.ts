@@ -9,6 +9,7 @@ import { enforce } from './lib/rate-limit';
 import { ageRoutes } from './routes/age';
 import { authRoutes } from './routes/auth';
 import { adminRoutes } from './routes/admin';
+import { billingRoutes } from './routes/billing';
 import { contactRoutes } from './routes/contact';
 import { dailyAdminRoutes } from './routes/dailyAdmin';
 import { dailyRoutes } from './routes/daily';
@@ -22,6 +23,7 @@ import { jobRoutes } from './routes/jobs';
 import { libraryRoutes } from './routes/library';
 import { moderationRoutes } from './routes/moderation';
 import { playUrlRoutes } from './routes/playUrl';
+import { recommendRoutes } from './routes/recommend';
 import { reportRoutes } from './routes/reports';
 import { publishRoutes } from './routes/publish';
 
@@ -72,6 +74,8 @@ export function buildApp(opts: AppOptions = {}): FastifyInstance {
   app.register(publishRoutes(services), { prefix: '/api' });
   app.register(galleryRoutes(services), { prefix: '/api' });
   app.register(reportRoutes(services), { prefix: '/api' });
+  app.register(recommendRoutes(services), { prefix: '/api' });
+  app.register(billingRoutes(services), { prefix: '/api' });
   app.register(adminRoutes(services), { prefix: '/api' });
   app.register(dailyAdminRoutes(services), { prefix: '/api' });
   app.register(dailyRoutes(services), { prefix: '/api' });
