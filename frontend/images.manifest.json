@@ -1,0 +1,105 @@
+{
+  "_note": "One entry per photo. Each photo is used exactly once (npm run check:images). Sources: Unsplash, free licence, no people or brand logos.",
+  "photos": [
+    {
+      "slot": "hero",
+      "file": "hero.jpg",
+      "source": "unsplash",
+      "sourceId": "photo-1757444838044-d9dcb1bb3017",
+      "pageUrl": "https://unsplash.com/photos/vintage-arcade-machine-glowing-with-neon-lights-fBUeYcEm_i0",
+      "author": "tozzo",
+      "authorUrl": "https://unsplash.com/@tozzo",
+      "alt": "A vintage arcade machine glowing with neon light in a dark room"
+    },
+    {
+      "slot": "steps",
+      "file": "steps.jpg",
+      "source": "unsplash",
+      "sourceId": "photo-1773875391527-b11ee24c7b68",
+      "pageUrl": "https://unsplash.com/photos/colorful-light-streaks-radiating-from-a-central-point-BZT18n7nfc8",
+      "author": "dongsh",
+      "authorUrl": "https://unsplash.com/@dongsh",
+      "alt": "Colourful streaks of light radiating from a central point"
+    },
+    {
+      "slot": "create",
+      "file": "create.jpg",
+      "source": "unsplash",
+      "sourceId": "photo-1612287230202-1ff1d85d1bdf",
+      "pageUrl": "https://unsplash.com/photos/game-controller-in-neon-light-hUD0PUczwJQ",
+      "author": "cjdante",
+      "authorUrl": "https://unsplash.com/@cjdante",
+      "alt": "A game controller lit by neon light"
+    },
+    {
+      "slot": "daily",
+      "file": "daily.jpg",
+      "source": "unsplash",
+      "sourceId": "photo-1759675739458-6e5a4a60a117",
+      "pageUrl": "https://unsplash.com/photos/aurora-borealis-over-snow-capped-mountains-and-starry-sky-2vVhfhbj5-s",
+      "author": "supergios",
+      "authorUrl": "https://unsplash.com/@supergios",
+      "alt": "Aurora borealis over snow-capped mountains under a starry sky"
+    },
+    {
+      "slot": "gallery",
+      "file": "gallery.jpg",
+      "source": "unsplash",
+      "sourceId": "photo-1763875067516-e947790c74ac",
+      "pageUrl": "https://unsplash.com/photos/colorful-game-pieces-on-a-board-game-YCRcavcVEFI",
+      "author": "parinaz_mhs",
+      "authorUrl": "https://unsplash.com/@parinaz_mhs",
+      "alt": "Colourful game pieces on a board game"
+    },
+    {
+      "slot": "recommend",
+      "file": "recommend.jpg",
+      "source": "unsplash",
+      "sourceId": "photo-1498736297812-3a08021f206f",
+      "pageUrl": "https://unsplash.com/photos/two-arcade-cabinets-zpxKdH_xNSI",
+      "author": "ben_neale",
+      "authorUrl": "https://unsplash.com/@ben_neale",
+      "alt": "Two arcade cabinets side by side"
+    },
+    {
+      "slot": "sealed",
+      "file": "sealed.jpg",
+      "source": "unsplash",
+      "sourceId": "photo-1783036123891-54c54faabbf0",
+      "pageUrl": "https://unsplash.com/photos/glowing-blue-water-inside-a-dark-sea-cave-sNRcb_j4pc0",
+      "author": "zeis",
+      "authorUrl": "https://unsplash.com/@zeis",
+      "alt": "Glowing blue water inside a dark sea cave"
+    },
+    {
+      "slot": "pricing",
+      "file": "pricing.jpg",
+      "source": "unsplash",
+      "sourceId": "photo-1757642520331-e31d18996443",
+      "pageUrl": "https://unsplash.com/photos/sunbeams-filter-through-a-misty-evergreen-forest-oQhnbwh3948",
+      "author": "timumphreys",
+      "authorUrl": "https://unsplash.com/@timumphreys",
+      "alt": "Sunbeams filtering through a misty evergreen forest"
+    },
+    {
+      "slot": "parents",
+      "file": "parents.jpg",
+      "source": "unsplash",
+      "sourceId": "photo-1786099117465-fe1e5757a7fa",
+      "pageUrl": "https://unsplash.com/photos/giant-stone-basin-on-mountain-cliff-99WDij6MlN4",
+      "author": "metropolitanmuseum",
+      "authorUrl": "https://unsplash.com/@metropolitanmuseum",
+      "alt": "A giant stone basin on a mountain cliff"
+    },
+    {
+      "slot": "story",
+      "file": "story.jpg",
+      "source": "unsplash",
+      "sourceId": "photo-1506260408121-e353d10b87c7",
+      "pageUrl": "https://unsplash.com/photos/green-hills-with-forest-under-cloudy-sky-during-daytime--SO3JtE3gZo",
+      "author": "claudiotesta",
+      "authorUrl": "https://unsplash.com/@claudiotesta",
+      "alt": "Green hills with forest under a cloudy sky"
+    }
+  ]
+}

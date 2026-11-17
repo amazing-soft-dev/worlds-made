@@ -16,8 +16,8 @@ const nextConfig: NextConfig = {
     ? {
         output: 'export' as const,
         trailingSlash: true,
-        // Replaced by a custom WebP loader in the image pipeline issue.
-        images: { unoptimized: true },
+        // No optimizer without a server: serve the WebP files built by npm run images.
+        images: { loader: 'custom' as const, loaderFile: './src/lib/image-loader.ts' },
       }
     : {
         images: { formats: ['image/avif', 'image/webp'] },
