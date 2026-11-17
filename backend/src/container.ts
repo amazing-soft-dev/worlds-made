@@ -6,6 +6,7 @@ import { MeteredLlm } from './adapters/llm/ledger';
 import type { Config } from './config';
 import { GameBuilder } from './services/games/builder';
 import { GameLibrary } from './services/games/library';
+import { GalleryService } from './services/community/gallery';
 import { PublishService } from './services/community/publish';
 import { BuildGate, SpendGuard } from './services/games/guards';
 import { UsageService } from './services/games/usage';
@@ -32,6 +33,7 @@ export interface Services {
   spend: SpendGuard;
   mailer: Mailer;
   publisher: PublishService;
+  gallery: GalleryService;
 }
 
 export function createServices(config: Config, overrides: Partial<Services> = {}): Services {
@@ -64,6 +66,7 @@ export function createServices(config: Config, overrides: Partial<Services> = {}
     gate,
     spend,
     publisher: overrides.publisher ?? new PublishService(store, games, moderation),
+    gallery: overrides.gallery ?? new GalleryService(store),
     mailer: overrides.mailer ?? (config.resendKey ? new ResendMailer(config.resendKey, config.mailFrom) : new MemoryMailer()),
   };
 }
