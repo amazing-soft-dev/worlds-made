@@ -20,6 +20,7 @@ function text(s,x,y,size,color,align){g.font='bold '+size+'px system-ui,sans-ser
 function overlay(lines){g.fillStyle='rgba(0,0,0,.55)';g.fillRect(0,0,W,H);for(var i=0;i<lines.length;i++)text(lines[i][0],W/2,200+i*38,lines[i][1],lines[i][2])}
 addEventListener('keydown',function(e){keys[e.key]=true;if(e.key===' '||e.key==='Enter'){if(state!=='play')begin();else act()}if(e.key===' '||e.key.indexOf('Arrow')===0)e.preventDefault()});
 addEventListener('keyup',function(e){keys[e.key]=false});
+addEventListener('error',function(e){try{parent.postMessage({type:'error',message:String(e.message||'error').slice(0,200)},'*')}catch(x){}});
 function pos(e){var r=cv.getBoundingClientRect();px=(e.clientX-r.left)*W/r.width;py=(e.clientY-r.top)*H/r.height}
 cv.addEventListener('pointermove',pos);
 cv.addEventListener('pointerdown',function(e){pos(e);if(state!=='play')begin();else act(px,py)});

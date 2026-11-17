@@ -7,6 +7,7 @@ Rules:
 - Draw all art with code or inline SVG/data URIs. Keep the file under 200 KB.
 - Include: a title screen, instructions, keyboard AND touch controls, score, game over, restart.
 - When the game ends, call: parent.postMessage({type:"score", value:<number>}, "*")
+- Report runtime errors so the page can offer a fix: addEventListener("error", function (e) { parent.postMessage({type:"error", message:String(e.message)}, "*"); })
 - Content must suit ages 8+. No gore, sexual content, real weapons branding, hate, or real people.
 - Do not copy named characters, logos, or trademarked games. Make original look-alikes.
 - Start from the TEMPLATE below and keep its loop structure.
