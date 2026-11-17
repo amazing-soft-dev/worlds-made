@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { AdSlot } from '@/components/ads/AdSlot';
 import { RecommendView } from '@/components/recommend/RecommendView';
 import { SectionTitle } from '@/components/ui/SectionTitle';
 
@@ -13,6 +14,7 @@ export default function RecommendPage() {
       <div className="mx-auto flex max-w-[1080px] flex-col gap-12">
         <SectionTitle as="h1" eyebrow="Find something to play" title="Game recommendations" description="Describe what you are in the mood for. No account needed." />
         <RecommendView />
+        <AdSlot />
       </div>
     </div>
   );

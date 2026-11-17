@@ -14,6 +14,9 @@
     "test": "tsx --test test/*.test.ts"
   },
   "dependencies": {
+    "@sentry/browser": "11.14.0",
+    "@vercel/analytics": "2.0.1",
+    "@vercel/speed-insights": "2.1.0",
     "@worlds-made/shared": "*",
     "motion": "14.14.0",
     "next": "16.4.6",
