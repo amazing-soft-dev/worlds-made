@@ -1,9 +1,14 @@
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readdirSync, readFileSync } from 'node:fs';
 import { test } from 'node:test';
 import { TABLES } from '../src/db/tables';
 
-const sql = readFileSync(new URL('../src/db/migrations/0004_rls.sql', import.meta.url), 'utf8');
+const dir = new URL('../src/db/migrations/', import.meta.url);
+const sql = readdirSync(dir)
+  .filter((f) => f.endsWith('.sql'))
+  .sort()
+  .map((f) => readFileSync(new URL(f, dir), 'utf8'))
+  .join('\n');
 
 /** Policies parsed as { table, command } pairs. */
 const policies = [...sql.matchAll(/create policy \w+ on (\w+) for (select|insert|update|delete|all)/g)].map((m) => ({
@@ -20,15 +25,16 @@ test('row-level security is enabled on every table', () => {
 });
 
 test('no policy grants a client write on server-controlled tables', () => {
-  const serverOnly = ['profiles', 'game_versions', 'build_usage', 'likes', 'reports', 'daily_challenges', 'challenge_scores', 'streaks', 'subscriptions', 'rec_cache'];
+  const serverOnly = ['profiles', 'game_versions', 'build_usage', 'likes', 'reports', 'daily_challenges', 'challenge_scores', 'streaks', 'subscriptions', 'rec_cache', 'llm_calls'];
   for (const t of serverOnly) {
     const writes = commandsFor(t).filter((c) => c !== 'select');
     assert.deepEqual(writes, [], `${t} must be read-only for clients, found ${writes.join(',')}`);
   }
 });
 
-test('rec_cache has no policy at all', () => {
+test('rec_cache and llm_calls have no policy at all', () => {
   assert.deepEqual(commandsFor('rec_cache'), []);
+  assert.deepEqual(commandsFor('llm_calls'), []);
 });
 
 test('drafts are the only games a client can write, and cannot be published or boosted', () => {
