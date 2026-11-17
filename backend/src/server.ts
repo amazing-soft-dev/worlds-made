@@ -1,9 +1,11 @@
 import { buildApp } from './app';
+import { assertProductionReady, loadConfig } from './config';
 
-const port = Number(process.env.PORT ?? 4000);
-const app = buildApp({ logger: true });
+const config = loadConfig();
+assertProductionReady(config);
+const app = buildApp({ logger: true, config });
 
-app.listen({ port, host: '127.0.0.1' }).catch((err: unknown) => {
+app.listen({ port: config.port, host: '127.0.0.1' }).catch((err: unknown) => {
   app.log.error(err);
   process.exit(1);
 });
