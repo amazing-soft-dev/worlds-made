@@ -1,0 +1,29 @@
+name: Feature or task
+description: Planned work with a branch, commits and acceptance criteria
+labels: [enhancement]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What changes and why.
+    validations:
+      required: true
+  - type: input
+    id: branch
+    attributes:
+      label: Branch
+      description: Prefix, issue number first, for example feat/12-short-description
+  - type: textarea
+    id: commits
+    attributes:
+      label: Planned commits
+      description: One logical step per line.
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      value: |
+        - [ ] Lands through a pull request into dev with CI passed
+        - [ ] Lint, typecheck and tests pass with zero warnings
+        - [ ] No secrets committed; new config is in .env.example

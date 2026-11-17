@@ -1,0 +1,28 @@
+name: Bug report
+description: Something is broken
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected result
+  - type: input
+    id: where
+    attributes:
+      label: Page, endpoint or workflow run
+  - type: checkboxes
+    id: safety
+    attributes:
+      label: Safety
+      options:
+        - label: This involves generated-game isolation, age handling or moderation (add the kids-safety or security label)
