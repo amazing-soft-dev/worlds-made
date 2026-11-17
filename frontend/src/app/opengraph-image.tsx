@@ -23,7 +23,7 @@ export default function OpenGraphImage() {
           color: '#e8ede5',
         }}
       >
-        <div style={{ fontSize: 26, letterSpacing: 6, color: '#ecd08a' }}>★ AI GAME MAKER</div>
+        <div style={{ fontSize: 26, letterSpacing: 6, color: '#ecd08a' }}>AI GAME MAKER</div>
         <div style={{ marginTop: 24, fontSize: 112, fontWeight: 700, lineHeight: 1.05 }}>{site.name}</div>
         <div style={{ marginTop: 28, fontSize: 40, color: '#8ba394' }}>{site.tagline}</div>
       </div>
