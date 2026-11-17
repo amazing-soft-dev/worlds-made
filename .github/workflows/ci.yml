@@ -32,6 +32,8 @@ jobs:
       - run: npm run lint
       - run: npm run typecheck
       - run: npm run check:images
+        env:
+          IMAGES_STRICT: '1' # every photo in the manifest must be used
       - run: npm run check:a11y
       - run: npm run check:sandbox
 
