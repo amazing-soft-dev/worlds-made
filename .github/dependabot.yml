@@ -1,0 +1,27 @@
+# Weekly update pull requests. These branches (dependabot/**) are not opened or merged by the
+# project workflows; a person reviews and merges or closes them.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    labels: [build]
+    commit-message:
+      prefix: 'build'
+      prefix-development: 'build'
+    open-pull-requests-limit: 5
+    groups:
+      minor-and-patch:
+        update-types: [minor, patch]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    labels: [ci]
+    commit-message:
+      prefix: 'ci'
+    open-pull-requests-limit: 3
