@@ -3,23 +3,33 @@ import type { GameVersionRow, ProfileRow } from '../../db/tables';
 import type { DataStore } from '../../adapters/data/store';
 import type { BuildResult, GameBuilder } from './builder';
 import type { Genre } from './templates';
+import type { BuildGate, SpendGuard } from './guards';
 import type { UsageService } from './usage';
 
 export type Charge = 'build' | 'free-repair';
 export type Charged = BuildResult & { charged: Charge };
 
 /**
- * What a player's request costs. The user is charged only after a build succeeds, so failures and timeouts are free.
+ * What a player's request costs and what it must pass first: the spend cap, the one-at-a-time gate and the daily
+ * allowance, in that order. The user is charged only after a build succeeds, so failures and timeouts are free.
  */
 export class BuildWorkflow {
   constructor(
     private readonly builder: GameBuilder,
     private readonly usage: UsageService,
     private readonly store: DataStore,
+    private readonly spend: SpendGuard,
+    private readonly gate: BuildGate,
   ) {}
 
-  private run<T>(_profile: ProfileRow, fn: () => Promise<T>): Promise<T> {
-    return fn();
+  private async run<T>(profile: ProfileRow, fn: () => Promise<T>): Promise<T> {
+    await this.spend.assertAllowed();
+    const release = this.gate.acquire(profile.id);
+    try {
+      return await fn();
+    } finally {
+      release();
+    }
   }
 
   generate(profile: ProfileRow, input: { prompt: string; genre?: Genre }): Promise<Charged> {
