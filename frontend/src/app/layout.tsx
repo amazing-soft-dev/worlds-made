@@ -4,6 +4,7 @@ import { Footer } from '@/components/layout/Footer';
 import { Nav } from '@/components/layout/Nav';
 import { SkipLink } from '@/components/layout/SkipLink';
 import { site } from '@/content/site';
+import { AuthProvider } from '@/lib/auth';
 import { cinzel, garamond } from './fonts';
 import './globals.css';
 
@@ -19,12 +20,14 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={`${cinzel.variable} ${garamond.variable}`}>
       <body className="font-body">
-        <SkipLink />
-        <Nav />
-        <main id="main" tabIndex={-1} className="outline-none">
-          {children}
-        </main>
-        <Footer />
+        <AuthProvider>
+          <SkipLink />
+          <Nav />
+          <main id="main" tabIndex={-1} className="outline-none">
+            {children}
+          </main>
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   );

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { AuthLink } from '@/components/auth/AuthLink';
 import { site } from '@/content/site';
 
 const linkClass =
@@ -38,9 +39,7 @@ export function Nav() {
         </nav>
 
         <div className="flex items-center gap-6">
-          <Link href="/login" className={linkClass}>
-            Sign in
-          </Link>
+          <AuthLink className={linkClass} />
           <details className="group relative tablet:hidden">
             <summary className={`${linkClass} cursor-pointer list-none`}>Menu</summary>
             <ul className="absolute right-0 top-full mt-4 flex min-w-44 flex-col gap-4 border border-gold-deep bg-bg p-5">
