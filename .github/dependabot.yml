@@ -12,6 +12,9 @@ updates:
       prefix: 'build'
       prefix-development: 'build'
     open-pull-requests-limit: 5
+    groups:
+      minor-and-patch:
+        update-types: [minor, patch]
 
   - package-ecosystem: github-actions
     directory: /
