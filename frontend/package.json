@@ -12,10 +12,11 @@
     "check:static": "node scripts/check-static.mjs"
   },
   "dependencies": {
+    "@worlds-made/shared": "*",
+    "motion": "14.14.0",
     "next": "16.4.6",
     "react": "19.3.1",
-    "react-dom": "19.3.1",
-    "@worlds-made/shared": "*"
+    "react-dom": "19.3.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "4.3.5",
