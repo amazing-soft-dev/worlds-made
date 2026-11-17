@@ -17,6 +17,7 @@ import { jobRoutes } from './routes/jobs';
 import { libraryRoutes } from './routes/library';
 import { moderationRoutes } from './routes/moderation';
 import { playUrlRoutes } from './routes/playUrl';
+import { publishRoutes } from './routes/publish';
 
 declare module 'fastify' {
   interface FastifyInstance {
@@ -62,6 +63,7 @@ export function buildApp(opts: AppOptions = {}): FastifyInstance {
   app.register(playUrlRoutes(services), { prefix: '/api' });
   app.register(downloadRoutes(services), { prefix: '/api' });
   app.register(contactRoutes(services), { prefix: '/api' });
+  app.register(publishRoutes(services), { prefix: '/api' });
   // The game origin route lives outside /api on purpose; it answers only on GAME_ORIGIN's host.
   app.register(gameOriginRoutes(services));
   return app;
