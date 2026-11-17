@@ -38,3 +38,9 @@
   /* Motion */
   --ease-site: cubic-bezier(0.44, 0, 0.56, 1);
 }
+
+/* Breakpoints measured on the design: tablet from 810px, desktop from 1200px. */
+@theme {
+  --breakpoint-tablet: 810px;
+  --breakpoint-desktop: 1200px;
+}
