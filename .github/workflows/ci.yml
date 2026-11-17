@@ -1,0 +1,121 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [dev, main]
+  workflow_dispatch:
+
+# A newer push to the same branch or pull request cancels the older run.
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+env:
+  NEXT_TELEMETRY_DISABLED: '1'
+
+jobs:
+  lint:
+    name: Lint and type check
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: latest
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run check:images
+
+  build:
+    name: Build (${{ matrix.target }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [server, static]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: latest
+          cache: npm
+      - run: npm ci
+
+      # server: the full app (Next image optimizer, /api proxied to the backend).
+      - name: Build server
+        if: matrix.target == 'server'
+        run: npm run build -w frontend
+
+      # static: plain HTML in out/, no server and no /api.
+      - name: Build static
+        if: matrix.target == 'static'
+        env:
+          NEXT_OUTPUT: export
+        run: |
+          npm run images -w frontend
+          npm run build -w frontend
+          npm run check:static -w frontend
+
+  ci-passed:
+    name: CI passed
+    needs: [lint, build]
+    if: always()
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Post or update the summary comment
+        if: always() && github.event_name == 'pull_request'
+        continue-on-error: true # Dependabot and fork tokens are read-only
+        uses: actions/github-script@v7
+        env:
+          LINT: ${{ needs.lint.result }}
+          BUILD: ${{ needs.build.result }}
+        with:
+          script: |
+            const marker = '<!-- ci-summary -->';
+            const icon = (r) => (r === 'success' ? '✅' : r === 'skipped' ? '⏭️' : '❌');
+            const ok = process.env.LINT === 'success' && process.env.BUILD === 'success';
+            const body = [
+              marker,
+              `### CI ${ok ? 'passed ✅' : 'failed ❌'}`,
+              '',
+              '| Job | Result |',
+              '| --- | --- |',
+              `| Lint and type check | ${icon(process.env.LINT)} ${process.env.LINT} |`,
+              `| Build (server and static) | ${icon(process.env.BUILD)} ${process.env.BUILD} |`,
+              '',
+              `Commit \`${context.payload.pull_request.head.sha.slice(0, 7)}\` · [run](${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})`,
+            ].join('\n');
+            const { data: comments } = await github.rest.issues.listComments({
+              ...context.repo,
+              issue_number: context.issue.number,
+              per_page: 100,
+            });
+            const mine = comments.find((c) => c.body && c.body.includes(marker));
+            if (mine) {
+              await github.rest.issues.updateComment({ ...context.repo, comment_id: mine.id, body });
+            } else {
+              await github.rest.issues.createComment({ ...context.repo, issue_number: context.issue.number, body });
+            }
+
+      # The one status check the branch rules require.
+      - name: Require all jobs to pass
+        env:
+          LINT: ${{ needs.lint.result }}
+          BUILD: ${{ needs.build.result }}
+        run: |
+          echo "lint=$LINT build=$BUILD"
+          if [ "$LINT" != "success" ] || [ "$BUILD" != "success" ]; then
+            echo "::error::CI did not pass"
+            exit 1
+          fi
