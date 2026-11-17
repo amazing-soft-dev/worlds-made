@@ -9,6 +9,7 @@ import { GameLibrary } from './services/games/library';
 import { GalleryService } from './services/community/gallery';
 import { ReportService } from './services/community/reports';
 import { DailyService } from './services/daily/daily';
+import { DailyScoreService } from './services/daily/scores';
 import { PublishService } from './services/community/publish';
 import { BuildGate, SpendGuard } from './services/games/guards';
 import { UsageService } from './services/games/usage';
@@ -38,6 +39,7 @@ export interface Services {
   gallery: GalleryService;
   reports: ReportService;
   daily: DailyService;
+  dailyScores: DailyScoreService;
 }
 
 export function createServices(config: Config, overrides: Partial<Services> = {}): Services {
@@ -75,5 +77,6 @@ export function createServices(config: Config, overrides: Partial<Services> = {}
     mailer,
     reports: overrides.reports ?? new ReportService(store, mailer, config.mailTo),
     daily: overrides.daily ?? new DailyService(store, games, builder),
+    dailyScores: overrides.dailyScores ?? new DailyScoreService(store, config.cookieSecret),
   };
 }
