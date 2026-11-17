@@ -7,6 +7,7 @@ import { genReqId, loggerOptions } from './lib/logger';
 import { ageRoutes } from './routes/age';
 import { authRoutes } from './routes/auth';
 import { healthRoutes } from './routes/health';
+import { jobRoutes } from './routes/jobs';
 
 declare module 'fastify' {
   interface FastifyInstance {
@@ -39,5 +40,6 @@ export function buildApp(opts: AppOptions = {}): FastifyInstance {
   app.register(healthRoutes, { prefix: '/api' });
   app.register(authRoutes(services), { prefix: '/api' });
   app.register(ageRoutes(services), { prefix: '/api' });
+  app.register(jobRoutes(services), { prefix: '/api' });
   return app;
 }
