@@ -27,7 +27,9 @@ each adapter and are documented in `.env.example`. Never commit real values.
 - **Game domain.** Generated games must be served from a different registrable domain than the main site
   (for example a separate domain or an R2 bucket), with no cookies. The backend route and CSP arrive in the
   game-origin issue; the domain itself has to be bought and attached to the backend project.
-- **Cron.** `crons` are added to `backend/vercel.json` with the daily-challenge job, so the schedule and route ship together.
+- **Cron.** `backend/vercel.json` schedules `/api/jobs/daily-generate` at 20:00 UTC (tomorrow's challenge for review) and `/api/jobs/retention` at 03:00 UTC. Set `CRON_SECRET`; Vercel sends it as a bearer token.
+- **Stripe.** Point a webhook at `https://<backend>/api/webhooks/stripe` for `checkout.session.completed`, `customer.subscription.*` and `invoice.payment_failed`, and set `STRIPE_WEBHOOK_SECRET`.
+- **Database.** Apply `backend/src/db/migrations/*.sql` in order on the Supabase project, create a private Storage bucket named `games`, and use a paid plan in production.
 - **Spend limits.** Set a monthly spend cap in Vercel and at the AI provider before any real key is added.
 - **Analytics.** Vercel Web Analytics and Speed Insights run in production only.
 - **Legal.** COPPA review and the DMCA agent registration are tracked in `docs/KIDS-COMPLIANCE.md` when it is added.

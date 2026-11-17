@@ -16,11 +16,15 @@
     "dev:frontend": "npm run dev -w frontend",
     "dev:backend": "npm run dev -w backend",
     "build": "npm run build --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "lint": "eslint . --max-warnings 0",
     "lint:fix": "eslint . --fix --max-warnings 0",
     "check:images": "npm run check:images -w frontend",
-    "check:a11y": "npm run check:a11y -w frontend"
+    "check:a11y": "npm run check:a11y -w frontend",
+    "test:e2e": "npm run test:e2e -w backend",
+    "check:sandbox": "npm run check:sandbox -w frontend",
+    "dev:fakes": "npm run dev:fakes -w backend"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
