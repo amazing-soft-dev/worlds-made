@@ -28,16 +28,25 @@ npm run dev:frontend   # http://localhost:3000
 
 Copy `.env.example` to `backend/.env` and `frontend/.env.local` if you need to change a value.
 The integrations (database, payments, AI, moderation, game data) have local fakes, so no keys are needed.
+If your shell has real keys set, `npm run dev:fakes` starts the backend on the fakes anyway.
 
 ## Checks
 
 ```bash
-npm run lint           # ESLint, zero warnings allowed
+npm run lint            # ESLint, zero warnings allowed
 npm run typecheck
-npm run check:images   # each photo is used once
-npm run build          # server build
+npm test                # unit and route tests: shared, backend, frontend
+npm run test:e2e        # the real server process over HTTP with a mock model
+npm run check:images    # each photo is used once
+npm run check:a11y      # text contrast
+npm run check:sandbox   # the game iframe stays sandbox="allow-scripts" only
+npm run build           # server build
 NEXT_OUTPUT=export npm run build -w frontend   # static build into frontend/out
+npm run check:static -w frontend               # after the static build: no server-only features leaked
 ```
+
+CI runs all of these; **CI passed** is the one required status check. See
+[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) for what each layer proves.
 
 ## Two build targets
 
